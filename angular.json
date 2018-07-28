@@ -23,8 +23,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
-            ],
+              "src/styles.css",
+              "../bwm-cli/node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ], "stylePreprocessorOptions":
+            { "includePaths": [ "./src/", "./src/styles/" ]
+            },
             "scripts": []
           },
           "configurations": {
