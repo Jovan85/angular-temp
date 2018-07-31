@@ -8,7 +8,7 @@ import { RendererStyleFlags3 } from '@angular/core/src/render3/interfaces/render
   // tslint:disable-next-line:component-selector
   selector: 'bwm-rentl-detail',
   templateUrl: './rentl-detail.component.html',
-  styleUrls: ['./rentl-detail.component.css']
+  styleUrls: ['./rentl-detail.component.scss']
 })
 export class RentlDetailComponent implements OnInit {
   param1: string;

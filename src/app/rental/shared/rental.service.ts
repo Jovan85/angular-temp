@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Rental } from './rental.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RentalService {
 
-  private rentals: Rental[] = [{
+  /* private rentals: Rental[] = [{
     id: '1',
     title: 'Central Apartment',
     city: 'New York',
@@ -58,10 +59,12 @@ export class RentalService {
     dailyRate: 33,
     shared: true,
     createdAt: '24/12/2017'
-}];
+}]; */
 
-  public getRentalById(rentalId: string): Observable<Rental> {
-    return new Observable<Rental>((observer) => {
+  constructor(private http: HttpClient) { }
+
+  public getRentalById(rentalId: string): Observable<any> {
+    /* return new Observable<Rental>((observer) => {
 
       setTimeout(() => {
         const foundRental = this.rentals.find((rental) => {
@@ -71,18 +74,19 @@ export class RentalService {
         observer.next(foundRental);
       }, 500);
 
-    });
+    }); */
+    return this.http.get('/api/v1/rentals/' + rentalId);
   }
 
-  public getRentals(): Observable<Rental[]> {
-    return new Observable<Rental[]>((observer) => {
+  public getRentals(): Observable<any> {
+    /* return new Observable<Rental[]>((observer) => {
 
       setTimeout(() => {
         observer.next(this.rentals);
       }, 1000);
 
-    });
+    }); */
+    return this.http.get('/api/v1/rentals');
   }
 
-  constructor() { }
 }
