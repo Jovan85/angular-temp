@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
+import { Daterangepicker } from 'ng2-daterangepicker';
 
 import { NgModule } from '@angular/core';
 import {NgPipesModule} from 'ngx-pipes';
@@ -11,13 +12,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { RentlDetailComponent } from './rentl-detail/rentl-detail.component';
 import { UppercasePipe } from '../common/pipes/uppercase.pipe';
 import { MapModule } from '../common/map/map.module';
+import { AuthGuard } from '../auth/shared/auth.guard';
+import { RentalDetailBookingComponent } from './rentl-detail/rental-detail-booking/rental-detail-booking.component';
 
 const routes: Routes = [
   { path: 'rentals',
     component: RentalComponent,
     children: [
       { path: '', component: RentalListComponent },
-      { path: ':rentlId', component: RentlDetailComponent }
+      { path: ':rentlId', component: RentlDetailComponent, canActivate: [AuthGuard] }
     ]
   }
 ];
@@ -28,7 +31,8 @@ const routes: Routes = [
     RentalListItemComponent,
     RentalComponent,
     RentlDetailComponent,
-    UppercasePipe
+    UppercasePipe,
+    RentalDetailBookingComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +40,7 @@ const routes: Routes = [
     HttpClientModule,
     NgPipesModule,
     MapModule,
+    Daterangepicker,
     RouterModule.forChild(routes)
   ]
 })
