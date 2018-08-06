@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: {
     type: String,
-    min: [4, 'Too short, min is 4 characters'],
+    min: [3, 'Too short, min is 3 characters'],
     max: [32, 'Too long, max is 32 characters']
   },
   email: {
