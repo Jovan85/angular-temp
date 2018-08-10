@@ -24,7 +24,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "../bwm-cli/node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "../bwm-cli/node_modules/font-awesome/css/font-awesome.min.css"
             ], "stylePreprocessorOptions":
             { "includePaths": [ "./src/", "./src/styles/" ]
