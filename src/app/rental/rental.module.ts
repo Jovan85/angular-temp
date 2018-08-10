@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { Daterangepicker } from 'ng2-daterangepicker';
+import { FormsModule } from '@angular/forms';
 
 import { NgModule } from '@angular/core';
 import {NgPipesModule} from 'ngx-pipes';
@@ -41,6 +42,7 @@ const routes: Routes = [
     NgPipesModule,
     MapModule,
     Daterangepicker,
+    FormsModule,
     RouterModule.forChild(routes)
   ]
 })
