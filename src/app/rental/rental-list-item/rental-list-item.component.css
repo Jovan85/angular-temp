@@ -1,6 +1,7 @@
 /* SINGLE CARD STYLES*/
 div.card.bwm-card {
   border: none;
+  margin-bottom: 25px;
 }
 
 .card-block {
