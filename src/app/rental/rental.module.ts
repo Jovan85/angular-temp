@@ -15,15 +15,19 @@ import { UppercasePipe } from '../common/pipes/uppercase.pipe';
 import { MapModule } from '../common/map/map.module';
 import { AuthGuard } from '../auth/shared/auth.guard';
 import { RentalDetailBookingComponent } from './rentl-detail/rental-detail-booking/rental-detail-booking.component';
+import { RentalSearchComponent } from './rental-search/rental-search.component';
+import { RentalCreateComponent } from './rental-create/rental-create.component';
 
 const routes: Routes = [
   { path: 'rentals',
     component: RentalComponent,
     children: [
       { path: '', component: RentalListComponent },
-      { path: ':rentlId', component: RentlDetailComponent, canActivate: [AuthGuard] }
+      { path: 'new', component: RentalCreateComponent, canActivate: [AuthGuard] },
+      { path: ':rentlId', component: RentlDetailComponent },
+      { path: ':city/homes', component: RentalSearchComponent }
     ]
-  }
+  },
 ];
 
 @NgModule({
@@ -33,7 +37,9 @@ const routes: Routes = [
     RentalComponent,
     RentlDetailComponent,
     UppercasePipe,
-    RentalDetailBookingComponent
+    RentalDetailBookingComponent,
+    RentalSearchComponent,
+    RentalCreateComponent
   ],
   imports: [
     BrowserModule,
