@@ -80,11 +80,11 @@ exports.register = (req, res) => {
   })
 }
 
-exports.authMiddleware = function(req, res, next ) {
+exports.authMiddleware = function(req, res, next) {
   const token = req.headers.authorization;
   if (token) {
     const user = parseToken(token);
-    User.findById(user.userId, (err, user) => {
+    User.findById(user.userId, function(err, user) {
       if (err) {
         return res.status(422).send({ errors: MongooseHelpers.normalizeErrors(err.errors) });
       }
@@ -92,12 +92,12 @@ exports.authMiddleware = function(req, res, next ) {
         res.locals.user = user;
         next();
       } else {
-        return res.status(422)
+        return res.status(401)
           .send({errors:[ { title: 'Not authorized', detail: 'You need to login to get access'} ] })
       }
     });
   } else {
-    return res.status(422)
+    return res.status(401)
        .send({errors:[ { title: 'Not authorized', detail: 'You need to login to get access'} ] })
   }
 }

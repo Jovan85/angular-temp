@@ -5,19 +5,18 @@ const User = require('../models/user');
 const UserCtrl = require('../controllers/user');
 const MongooseHelpers = require('../helpers/mongoose');
 
-router.get('/:id', (req, res) => {
-  const rentalId = req.params.id;
+router.get('/manage', UserCtrl.authMiddleware, function(req, res) {
+  const user = res.locals.user;
 
-  Rental.findById(rentalId)
-        .populate('user', 'username -_id')
-        .populate('bookings', 'startAt endAt -_id')
-        .exec((err, foundRental) => {
-          if (err) {
-            return res.status(422).send({errors:
-              [ { title: 'Rental error', detail: 'Could not find rental'} ] })
-          }
-          return res.json(foundRental);
-        });
+  Rental
+    .where({user})
+    .populate('bookings')
+    .exec(function(err, foundRentals) {
+      if (err) {
+        return res.status(422).send({ errors: MongooseHelpers.normalizeErrors(err.errors) });
+      }
+      return res.json(foundRentals);
+   });
 });
 
 router.get('/secret', UserCtrl.authMiddleware, (req, res) => {
@@ -71,6 +70,53 @@ router.post('', UserCtrl.authMiddleware, (req, res) => {
     User.update({_id: user.id}, { $push: {rentals: newRental} }, () => {});
     return res.json(newRental);
   });
+});
+
+router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
+  const user = res.locals.user;
+
+  Rental.findById(req.params.id)
+        .populate('user', '_id')
+        .populate({
+          path: 'bookings',
+          select: 'startAt',
+          match: { startAt: { $gt: new Date()} }
+        })
+        .exec(function(err, foundRental) {
+          if (err) {
+            return res.status(422).send({ errors: MongooseHelpers.normalizeErrors(err.errors) });
+          }
+          if(user.id !== foundRental.user.id) {
+            return res.status(422).send({errors:
+              [ { title: 'Invalid user', detail: 'You are not rental owner'} ] });
+          }
+          if (foundRental.bookings.length > 0) {
+            return res.status(422).send({errors:
+              [ { title: 'Active bookings', detail: 'Cannot delete rental with active bookings'} ] });
+          }
+
+          foundRental.remove((err) => {
+            if (err) {
+              return res.status(422).send({ errors: MongooseHelpers.normalizeErrors(err.errors) });
+            }
+            return res.json({'status': 'deleted'});
+          });
+        });
+});
+
+router.get('/:id', (req, res) => {
+  const rentalId = req.params.id;
+
+  Rental.findById(rentalId)
+        .populate('user', 'username -_id')
+        .populate('bookings', 'startAt endAt -_id')
+        .exec((err, foundRental) => {
+          if (err) {
+            return res.status(422).send({errors:
+              [ { title: 'Rental error', detail: 'Could not find rental'} ] })
+          }
+          return res.json(foundRental);
+        });
 });
 
 module.exports = router;
