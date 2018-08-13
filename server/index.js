@@ -11,7 +11,7 @@ const app = express();
 mongoose.connect(config.DB_URI, { useNewUrlParser: true })
   .then(() => {
     const fakeDb = new FakeDb();
-    fakeDb.seedDB();
+    // fakeDb.seedDB();
   })
 
 app.use(bodyParser.json());

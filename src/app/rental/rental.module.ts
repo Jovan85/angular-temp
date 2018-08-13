@@ -27,7 +27,7 @@ const routes: Routes = [
       { path: ':rentlId', component: RentlDetailComponent },
       { path: ':city/homes', component: RentalSearchComponent }
     ]
-  },
+  }
 ];
 
 @NgModule({
