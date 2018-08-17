@@ -72,6 +72,30 @@ router.post('', UserCtrl.authMiddleware, (req, res) => {
   });
 });
 
+router.patch('/:id', UserCtrl.authMiddleware, (req, res) => {
+  const user = res.locals.user;
+  const rentalData = req.body;
+
+  Rental.findById(req.params.id)
+        .populate('user', '_id')
+        .exec((err, foundRental) => {
+          if (err) {
+            return res.status(422).send({ errors: MongooseHelpers.normalizeErrors(err.errors) });
+          }
+          if(user.id !== foundRental.user.id) {
+            return res.status(422).send({errors:
+              [ { title: 'Invalid user', detail: 'You are not rental owner'} ] });
+          }
+          foundRental.set(rentalData);
+          foundRental.save((err) =>{
+            if (err) {
+              return res.status(422).send({ errors: MongooseHelpers.normalizeErrors(err.errors) });
+            }
+            return res.status(200).send(foundRental);
+          });
+        });
+});
+
 router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
   const user = res.locals.user;
 
@@ -102,6 +126,24 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
             return res.json({'status': 'deleted'});
           });
         });
+});
+
+router.get('/:id/verify-user', UserCtrl.authMiddleware, (req, res) => {
+  const user = res.locals.user;
+
+  Rental
+    .findById(req.params.id)
+    .populate('user')
+    .exec((err, foundRental) => {
+      if (err) {
+        return res.status(422).send({ errors: MongooseHelpers.normalizeErrors(err.errors) });
+      }
+      if (foundRental.user.id !== user.id) {
+        return res.status(422).send({errors:
+          [ { title: 'Invalid user', detail: 'You are not rental owner'} ] });
+      }
+      return res.json({status: 'verified'});
+    });
 });
 
 router.get('/:id', (req, res) => {

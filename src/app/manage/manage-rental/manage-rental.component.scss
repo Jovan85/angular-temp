@@ -18,19 +18,21 @@
     padding: 10px 15px;
   }
 
+  .btn-warning {
+    margin-left: 10px;
+    font-size: 16px
+  }
+
   .btn-delete {
     float: right;
     margin-left: 5px;
-    font-size: 10px;
+    margin-top: 5px;
+    font-size: 16px;
   }
 
   .btn-success, .btn-light {
     font-size: 16px;
     border: 1px solid green;
-  }
-
-  .btn-delete {
-    font-size: 16px;
   }
 
   .card-footer {
