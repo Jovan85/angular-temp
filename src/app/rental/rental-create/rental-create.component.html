@@ -104,8 +104,7 @@
                    class="form-control"
                    id="shared"
                    name="shared"
-                   [(ngModel)]="newRental.shared"
-                   required>
+                   [(ngModel)]="newRental.shared">
           </div>
           <button (click)="createRental()"
                   [disabled]="!rentalForm.form.valid"
